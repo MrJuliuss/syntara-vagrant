@@ -12,6 +12,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |vconfig|
         config.vm.network "forwarded_port", guest: 80, host: 8888
     end
 
+    # Configure shared folders
+    vconfig.vm.synced_folder ".",  "/vagrant", id: "vagrant-root"
+    vconfig.vm.synced_folder "..", "/var/www", id: "application"
+
     # Provision the box
     vconfig.vm.provision :ansible do |ansible|
         ansible.playbook = "ansible/syntara.yml"
