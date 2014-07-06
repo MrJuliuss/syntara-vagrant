@@ -6,3 +6,6 @@
     - php5-fpm
     - php5-mysql
     - php5-mcrypt
+
+- name: Enable php mcrypt
+  shell: "php5enmod mcrypt"

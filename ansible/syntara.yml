@@ -5,3 +5,5 @@
     - nginx
     - php-fpm
     - mysql
+    - composer
+    - laravel

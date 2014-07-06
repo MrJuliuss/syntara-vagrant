@@ -1,0 +1,12 @@
+---
+- name: Check composer.json existence
+  stat: path=/vagrant/composer.json
+  register: laravel_installed
+
+- name: Install Laravel
+  command: "composer create-project laravel/laravel --prefer-dist /home/vagrant/laravel"
+  when: not laravel_installed.stat.exists
+
+- name: Move laravel files
+  command : "mv /home/vagrant/laravel/* /vagrant"
+  when: not laravel_installed.stat.exists
