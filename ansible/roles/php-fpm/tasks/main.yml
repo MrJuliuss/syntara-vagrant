@@ -9,3 +9,4 @@
 
 - name: Enable php mcrypt
   shell: "php5enmod mcrypt"
+  notify: Restart php-fpm

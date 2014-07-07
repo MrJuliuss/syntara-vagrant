@@ -1,3 +1,19 @@
---- 
+---
 - name: Install nginx
   apt: pkg=nginx state=latest
+
+- name: Check if syntara vhost file exists
+  stat: path=/etc/nginx/sites-available/syntara
+  register: vhost_installed
+
+- name: Copy syntara vhost file
+  template: src=syntara.j2 dest=/etc/nginx/sites-available/syntara
+
+- name: Remove default vhost file
+  shell: rm /etc/nginx/sites-enabled/default
+  ignore_errors: True
+
+- name: Enabled syntara vhost
+  shell: ln -s /etc/nginx/sites-available/syntara /etc/nginx/sites-enabled/syntara
+  notify: Reload nginx
+  when: not vhost_installed.stat.exists
