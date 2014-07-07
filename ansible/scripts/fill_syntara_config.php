@@ -6,13 +6,15 @@
 * app/config/database.php : database configuration
 */
 
+$rootPath = "/vagrant/";
+
 // Define storage_path function
-function storage_path() {
-    return 'app/storage/';
+function storage_path($root) {
+    return $root .'app/storage';
 }
 
-$database = include "/vagrant/app/config/database.php";
-$app = include "/vagrant/app/config/app.php";
+$database = include $rootPath . "app/config/database.php";
+$app = include $rootPath . "app/config/app.php";
 
 $sentryProvider = "Cartalyst\Sentry\SentryServiceProvider";
 $syntaraProvider = "Mrjuliuss\Syntara\SyntaraServiceProvider";
@@ -29,9 +31,14 @@ if(!array_key_exists('Sentry', $app['aliases'])) {
     $app['aliases']['Sentry'] = 'Cartalyst\Sentry\Facades\Laravel\Sentry';    
 }
 
-$app['manifest'] = storage_path() ."/meta";
+$app['manifest'] = storage_path($rootPath) ."/meta";
 $database['connections']['mysql']['database'] = 'syntara';
 $database['connections']['mysql']['username'] = 'root';
 
-file_put_contents('/vagrant/app/config/app.php', '<?php return '.var_export($app, true).';');
-file_put_contents('/vagrant/app/config/database.php', '<?php return '.var_export($database, true).';');
+$composerJson = file_get_contents($rootPath . 'composer.json');
+$composerArray = json_decode($composerJson, true);
+$composerArray['require']['mrjuliuss/syntara'] = "1.2.*";
+
+file_put_contents($rootPath . 'app/config/app.php', '<?php return '.var_export($app, true).';');
+file_put_contents($rootPath . 'app/config/database.php', '<?php return '.var_export($database, true).';');
+file_put_contents($rootPath . 'composer.json', json_encode($composerArray));
