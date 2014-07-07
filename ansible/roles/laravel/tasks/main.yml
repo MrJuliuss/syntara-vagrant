@@ -8,5 +8,8 @@
   when: not laravel_installed.stat.exists
 
 - name: Move laravel files
-  command : "mv /home/vagrant/laravel/* /vagrant"
+  shell: "cp -R /home/vagrant/laravel/* /vagrant"
   when: not laravel_installed.stat.exists
+
+- name: Remove tmp laravel folder
+  shell: "rm -rf /home/vagrant/laravel"
