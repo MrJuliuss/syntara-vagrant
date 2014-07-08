@@ -20,7 +20,7 @@ $sentryProvider = "Cartalyst\Sentry\SentryServiceProvider";
 $syntaraProvider = "Mrjuliuss\Syntara\SyntaraServiceProvider";
 
 if(!in_array($sentryProvider, $app['providers'])) {
-    $app['providers'][] = $sentryProvider;    
+    $app['providers'][] = $sentryProvider;
 }
 
 if(!in_array($syntaraProvider, $app['providers'])) {
@@ -28,8 +28,10 @@ if(!in_array($syntaraProvider, $app['providers'])) {
 }
 
 if(!array_key_exists('Sentry', $app['aliases'])) {
-    $app['aliases']['Sentry'] = 'Cartalyst\Sentry\Facades\Laravel\Sentry';    
+    $app['aliases']['Sentry'] = 'Cartalyst\Sentry\Facades\Laravel\Sentry';
 }
+
+$app['debug'] = true;
 
 $app['manifest'] = storage_path($rootPath) ."/meta";
 $database['connections']['mysql']['database'] = 'syntara';

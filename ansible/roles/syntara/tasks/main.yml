@@ -1,0 +1,12 @@
+---
+- name: Configure Laravel
+  shell: "php /vagrant/ansible/scripts/fill_syntara_config.php"
+
+- name: Composer update
+  shell: "cd /vagrant && composer update"
+
+- name: Create syntara database
+  mysql_db: name=syntara state=present
+
+- name: Syntara install command
+  shell: "cd /vagrant && php artisan syntara:install --no-interaction"
