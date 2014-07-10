@@ -10,3 +10,6 @@
 
 - name: Syntara install command
   shell: "cd /vagrant && php artisan syntara:install --no-interaction"
+
+- name: Create user
+  shell: "cd /vagrant && php artisan create:user admin admin@syntara.dev foobar Admin"
