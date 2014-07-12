@@ -2,6 +2,7 @@
 - hosts: all
   sudo:  true
   roles :
+    - common
     - nginx
     - php-fpm
     - mysql

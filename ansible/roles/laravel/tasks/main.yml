@@ -4,7 +4,7 @@
   register: laravel_installed
 
 - name: Install Laravel
-  command: "composer create-project laravel/laravel --prefer-dist /home/vagrant/laravel"
+  command: "composer create-project laravel/laravel /home/vagrant/laravel {{laravel_version}}"
   when: not laravel_installed.stat.exists
 
 - name: Move laravel files
