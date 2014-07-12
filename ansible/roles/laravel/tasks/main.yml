@@ -16,5 +16,3 @@
 
 - name: Chmod 777 on app/storage
   shell: "chmod 777 /vagrant/app/storage/logs"
-  # Vagrant v1.1+
-
