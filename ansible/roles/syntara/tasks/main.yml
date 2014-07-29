@@ -2,14 +2,35 @@
 - name: Configure Laravel
   shell: "php /vagrant/ansible/scripts/fill_syntara_config.php"
 
+- name: Install Syntara (demo)
+  shell: "php /vagrant/ansible/scripts/fill_syntara_composer.php"
+  when: type == "demo"
+
+- name: Create workbench
+  shell: "mkdir /vagrant/workbench && mkdir mkdir /vagrant/workbench/mrjuliuss"
+  when: type == "dev"
+
+- name: Git clone syntara
+  shell: "cd /vagrant/workbench/mrjuliuss/ && git clone git@github.com:MrJuliuss/syntara.git"
+  when: type == "dev"
+
 - name: Composer update
   shell: "cd /vagrant && composer update"
+  notify: Restart nginx
 
 - name: Create syntara database
   mysql_db: name=syntara state=present
 
-- name: Syntara install command
-  shell: "cd /vagrant && php artisan syntara:install --no-interaction"
+- name: Publish assets
+  shell: "cd /vagrant && php artisan asset:publish mrjuliuss/syntara"
+  when: type == "demo"
+
+- name: Migrations
+  shell: "cd /vagrant && php artisan migrate --package=cartalyst/sentry --force && php artisan migrate --package=mrjuliuss/syntara --force"
+  when: type == "demo"
+
+- name: Create admin Group
+  shell: 'cd /vagrant && ./ansible/scripts/db.sh'
 
 - name: Create user
   shell: "cd /vagrant && php artisan create:user admin admin@syntara.dev foobar Admin"

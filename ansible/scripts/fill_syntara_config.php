@@ -37,10 +37,5 @@ $app['manifest'] = storage_path($rootPath) ."/meta";
 $database['connections']['mysql']['database'] = 'syntara';
 $database['connections']['mysql']['username'] = 'root';
 
-$composerJson = file_get_contents($rootPath . 'composer.json');
-$composerArray = json_decode($composerJson, true);
-$composerArray['require']['mrjuliuss/syntara'] = "1.2.*";
-
 file_put_contents($rootPath . 'app/config/app.php', '<?php return '.var_export($app, true).';');
 file_put_contents($rootPath . 'app/config/database.php', '<?php return '.var_export($database, true).';');
-file_put_contents($rootPath . 'composer.json', json_encode($composerArray));
