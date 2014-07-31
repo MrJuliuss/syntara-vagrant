@@ -21,13 +21,21 @@
 - name: Create syntara database
   mysql_db: name=syntara state=present
 
-- name: Publish assets
+- name: Publish assets (demo)
   shell: "cd /vagrant && php artisan asset:publish mrjuliuss/syntara"
   when: type == "demo"
 
-- name: Migrations
+- name: Migrations (demo)
   shell: "cd /vagrant && php artisan migrate --package=cartalyst/sentry --force && php artisan migrate --package=mrjuliuss/syntara --force"
   when: type == "demo"
+
+- name: Publish assets (dev)
+  shell: "cd /vagrant && php artisan asset:publish --path=workbench/mrjuliuss/syntara/public/ mrjuliuss/syntara"
+  when: type == "dev"
+
+- name: Migrations (dev)
+  shell: "cd /vagrant && php artisan migrate --path=workbench/mrjuliuss/syntara/src/migrations/ --package=mrjuliuss/syntara && php artisan migrate --path=workbench/mrjuliuss/syntara/vendor/cartalyst/sentry/src/migrations --package=cartalyst/sentry"
+  when: type == "dev"
 
 - name: Create admin Group
   shell: 'cd /vagrant && ./ansible/scripts/db.sh'
