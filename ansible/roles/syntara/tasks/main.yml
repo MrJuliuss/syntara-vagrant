@@ -7,16 +7,28 @@
   when: type == "demo"
 
 - name: Create workbench
-  shell: "mkdir /vagrant/workbench && mkdir mkdir /vagrant/workbench/mrjuliuss"
+  shell: "mkdir /vagrant/workbench && mkdir /vagrant/workbench/mrjuliuss"
   when: type == "dev"
 
+- name: Creatre workbench directory
+  shell: "cd /vagrant/workbench/mrjuliuss/"
+  when: type == "dev"
+
+- name: Get local dir
+  sudo: false
+  local_action: shell pwd
+  register: local_dir
+
 - name: Git clone syntara
-  shell: "cd /vagrant/workbench/mrjuliuss/ && git clone -b {{ syntara_version }} git@github.com:MrJuliuss/syntara.git"
+  connection: local
+  sudo: false
+  shell: "git clone -b {{ syntara_version }} git@github.com:MrJuliuss/syntara.git {{local_dir.stdout}}/../workbench/mrjuliuss/syntara"
   when: type == "dev"
 
 - name: Composer update
   shell: "cd /vagrant && composer update"
   notify: Restart nginx
+  when: type == "demo"
 
 - name: Create syntara database
   mysql_db: name=syntara state=present
