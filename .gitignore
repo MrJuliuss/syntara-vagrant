@@ -1,1 +1,13 @@
 .vagrant
+CONTRIBUTING.md
+app/
+artisan
+bootstrap/
+composer.json
+composer.lock
+phpunit.xml
+public/
+readme.md
+server.php
+vendor/
+workbench/
