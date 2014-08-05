@@ -6,9 +6,14 @@
   shell: "php /vagrant/ansible/scripts/fill_syntara_composer.php {{ syntara_version }}.*"
   when: type == "demo"
 
+- name: Check workbench directory existence
+  stat: path=/vagrant/workbench
+  register: workbench_existing
+  when: type == "dev"
+
 - name: Create workbench
   shell: "mkdir /vagrant/workbench && mkdir /vagrant/workbench/mrjuliuss"
-  when: type == "dev"
+  when: type == "dev" and not workbench_existing.stat.exists
 
 - name: Creatre workbench directory
   shell: "cd /vagrant/workbench/mrjuliuss/"
@@ -19,11 +24,16 @@
   local_action: shell pwd
   register: local_dir
 
+- name: Check syntara directory existence
+  stat: path=/vagrant/workbench/mrjuliuss/syntara
+  register: syntara_existing
+  when: type == "dev"
+
 - name: Git clone syntara
   connection: local
   sudo: false
   shell: "git clone -b {{ syntara_version }} git@github.com:MrJuliuss/syntara.git {{local_dir.stdout}}/../workbench/mrjuliuss/syntara"
-  when: type == "dev"
+  when: type == "dev" and not syntara_existing.stat.exists
 
 - name: Composer update
   shell: "cd /vagrant && composer update"
