@@ -28,6 +28,8 @@ Add this line to your host file (/etc/hosts on a Linux distribution)
 
 ```syntara.dev   192.168.100.100```
 
+Go to **syntara.dev/dashboard/***
+
 ## Dev version
 
 ### Work In Progress
