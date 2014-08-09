@@ -26,7 +26,7 @@ In ```group_var/all``` change ```type``` to ```demo```
 
 Add this line to your host file (/etc/hosts on a Linux distribution)
 
-```syntara.dev   192.168.100.100```
+```192.168.100.100  syntara.dev```
 
 Go to **syntara.dev/dashboard/**
 
